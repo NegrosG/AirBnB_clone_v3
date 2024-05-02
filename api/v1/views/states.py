@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Create a route for handling State objects and operations
+route for handling State objects and operations
 """
 from flask import jsonify, abort, request
 from api.v1.views import app_views, storage
@@ -10,7 +10,8 @@ from models.state import State
 @app_views.route("/states", methods=["GET"], strict_slashes=False)
 def state_get_all():
     """
-    retrieves all State objects and returns json of all states
+    retrieves all State objects
+    :return: json of all states
     """
     state_list = []
     state_obj = storage.all("State")
@@ -23,7 +24,8 @@ def state_get_all():
 @app_views.route("/states", methods=["POST"], strict_slashes=False)
 def state_create():
     """
-    create state route and returns newly created state obj
+    create state route
+    :return: newly created state obj
     """
     state_json = request.get_json(silent=True)
     if state_json is None:
@@ -33,10 +35,10 @@ def state_create():
 
     new_state = State(**state_json)
     new_state.save()
-    response = jsonify(new_state.to_json())
-    response.status_code = 201
+    resp = jsonify(new_state.to_json())
+    resp.status_code = 201
 
-    return response
+    return resp
 
 
 @app_views.route("/states/<state_id>",  methods=["GET"], strict_slashes=False)
